@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProviderService } from '../../services/data-provider.service';
 import { ChartsProvider } from '../../services/charts-provider.service';
-import  _  from 'lodash';
 import { HistogramDataset } from '../../interfaces/HistogramDataset';
+import  _  from 'lodash';
 
 
 @Component({
@@ -17,6 +17,7 @@ export class StatisticsComponent implements OnInit {
   
   public dataset: any[] = [];
   private chart1!:HTMLCanvasElement;
+  private chart2!:HTMLCanvasElement;
   
   
   /***| HOOKS |***/
@@ -25,6 +26,7 @@ export class StatisticsComponent implements OnInit {
   
   ngAfterViewInit() {
     this.chart1 = document.querySelector('#chart-1') as HTMLCanvasElement
+    this.chart2 = document.querySelector('#chart-2') as HTMLCanvasElement
   }
 
   ngOnInit(): void {
@@ -37,6 +39,15 @@ export class StatisticsComponent implements OnInit {
   /***| METHODS |***/
 
   public charts() {
+
+    this.initChart1();
+
+  }
+
+
+  /***| INDIVIDUAL CHART GENERATION |***/
+
+  private initChart1() {
 
     let data = this.dataset.map(item => {
       return { rentPrice: item.rent_price, buyPrice: item.buy_price, rooms: item.n_rooms }
@@ -53,29 +64,29 @@ export class StatisticsComponent implements OnInit {
       roomBuyPrices .push({ rooms: rooms, meanBuyPrice : Math.round(buyPrices  * 100) / 100 });
       roomRentPrices.push({ rooms: rooms, meanRentPrice: Math.round(rentPrices * 100) / 100 });
 
-      labels.push(parseInt(rooms))
+      labels.push(parseFloat(rooms))
 
     }
 
-    const datasets:HistogramDataset[] = [
+    const ds:HistogramDataset[] = [
       {
         label: 'Mean Buy Price',
         data: roomBuyPrices.map(e => e.meanBuyPrice),
-        backgroundColor: 'rgba(255, 58, 58, 0.8)',
+        backgroundColor: 'rgba(255, 58, 58, 0.60)',
         borderColor: 'rgba(255, 255, 255, 0)',
         borderWidth: 1
       },
       {
         label: 'Mean Rent Price',
         data: roomRentPrices.map(e => e.meanRentPrice),
-        backgroundColor: 'rgba(0, 79, 220, 0.8)',
+        backgroundColor: 'rgba(0, 79, 220, 0.60)',
         borderColor: 'rgba(255, 255, 255, 0)',
         borderWidth: 1
-      },
+      }
     ]
 
     // Generate Chart HERE
-    this._charts.histogram( labels, datasets, this.chart1, 500
+    this._charts.histogram( labels, ds, 'rooms', 'prices €',  this.chart1, 100
     );
 
   }

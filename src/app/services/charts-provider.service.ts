@@ -12,7 +12,7 @@ export class ChartsProvider {
   }
 
 
-  public histogram(labels:number[], datasets:HistogramDataset[], canvas: HTMLCanvasElement, step:number = 1): void {
+  public histogram(labels:number[], datasets:HistogramDataset[], xTitle:string, yTitle:string, canvas: HTMLCanvasElement, step:number = 1): void {
 
     const context = canvas.getContext('2d');
 
@@ -22,9 +22,21 @@ export class ChartsProvider {
       data: {
         labels: labels,
         datasets: datasets
+      },
+      options: {
+        scales: {
+          x: {
+            title: { display: true, text: xTitle
+            }
+          },
+          y: {
+            title: { display: true, text: yTitle
+            }
+          }
+        }
       }
     });
 
   }
-
+  
 }
