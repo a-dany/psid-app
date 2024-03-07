@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart, registerables } from 'chart.js';
 import { DataProviderService } from '../../services/data-provider.service';
+import { ChartsProvider } from '../../services/charts-provider.service';
+import  _  from 'lodash';
+import { HistogramDataset } from '../../interfaces/HistogramDataset';
+
 
 @Component({
   selector: 'app-statistics',
@@ -9,72 +12,72 @@ import { DataProviderService } from '../../services/data-provider.service';
 })
 export class StatisticsComponent implements OnInit {
   
-  public dataset: any[] = [];
 
-  constructor( private _data:DataProviderService ) { }
+  /***| ATTRIBUTES |***/
+  
+  public dataset: any[] = [];
+  private chart1!:HTMLCanvasElement;
+  
+  
+  /***| HOOKS |***/
+  
+  constructor( private _data:DataProviderService, private _charts:ChartsProvider ) { }
+  
+  ngAfterViewInit() {
+    this.chart1 = document.querySelector('#chart-1') as HTMLCanvasElement
+  }
 
   ngOnInit(): void {
-    this._data.getData().subscribe(
-      (data: any) => {
-        this.dataset = this._data.parseCsv(data);
-        this.generateHistogram();
-      }
-    ).add( () => this.charts() )
-    
+    this._data.getData().subscribe(   (data: any) => { this.dataset = this._data.parseCsv(data); }
+    )
+    .add( () => this.charts() )
   }
+  
+  
+  /***| METHODS |***/
 
   public charts() {
 
-    let pricesByRoomNumber = this.dataset.map(item => {
+    let data = this.dataset.map(item => {
       return { rentPrice: item.rent_price, buyPrice: item.buy_price, rooms: item.n_rooms }
-    })
-
-    
-
-  }
-
-  generateHistogram(): void {
-    // Obtenir les valeurs uniques de la colonne n_rooms
-    const uniqueRooms = [...new Set(this.dataset.map(data => data.n_rooms))];
-  
-    // Obtenir les valeurs minimales et maximales des prix d'achat
-    const minPrice = Math.min(...this.dataset.filter(data => data.buy_price >= 0).map(data => data.buy_price));
-    const maxPrice = Math.max(...this.dataset.filter(data => data.buy_price >= 0).map(data => data.buy_price));
-  
-    // Créer les options pour l'axe Y
-    const yAxisOptions = {
-      ticks: {
-        min: minPrice, // Plage de prix minimale
-        max: maxPrice, // Plage de prix maximale
-        stepSize: 1000000 // Écart entre chaque valeur sur l'axe Y
-      }
-    };
-  
-    // Créer le graphique avec les données filtrées et les options d'axe Y
-    const ctx = document.getElementById('histogramChart') as HTMLCanvasElement;
-    const histogramChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: uniqueRooms.map(room => `${room}`), // Utiliser les valeurs uniques de n_rooms sur l'axe X
-        datasets: [{
-          label: 'Buy Price',
-          data: this.dataset.map(data => data.buy_price),
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Number of Rooms'
-            }
-          },
-          y: yAxisOptions // Utiliser les options d'axe Y définies ci-dessus
-        }
-      }
     });
+
+    let groupedByRooms = _.groupBy(data, 'rooms')
+    let roomBuyPrices = []; let roomRentPrices = [];
+    let labels = []
+
+    for (const rooms in groupedByRooms) {
+      const buyPrices  = groupedByRooms[rooms].map(item => Math.abs(parseFloat(item.buyPrice ))).reduce((a,b) => a+b) / groupedByRooms[rooms].length;
+      const rentPrices = groupedByRooms[rooms].map(item => Math.abs(parseFloat(item.rentPrice))).reduce((a,b) => a+b) / groupedByRooms[rooms].length;
+
+      roomBuyPrices .push({ rooms: rooms, meanBuyPrice : Math.round(buyPrices  * 100) / 100 });
+      roomRentPrices.push({ rooms: rooms, meanRentPrice: Math.round(rentPrices * 100) / 100 });
+
+      labels.push(parseInt(rooms))
+
+    }
+
+    const datasets:HistogramDataset[] = [
+      {
+        label: 'Mean Buy Price',
+        data: roomBuyPrices.map(e => e.meanBuyPrice),
+        backgroundColor: 'rgba(255, 58, 58, 0.8)',
+        borderColor: 'rgba(255, 255, 255, 0)',
+        borderWidth: 1
+      },
+      {
+        label: 'Mean Rent Price',
+        data: roomRentPrices.map(e => e.meanRentPrice),
+        backgroundColor: 'rgba(0, 79, 220, 0.8)',
+        borderColor: 'rgba(255, 255, 255, 0)',
+        borderWidth: 1
+      },
+    ]
+
+    // Generate Chart HERE
+    this._charts.histogram( labels, datasets, this.chart1, 500
+    );
+
   }
+
 }

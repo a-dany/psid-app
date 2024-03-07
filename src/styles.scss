@@ -10,7 +10,6 @@
     // text-shadow: 4px 5px 3px #00000026;
 }
 [separator] {
-    opacity: 0; --m: 1.8em;
-    margin-top: var(--m) !important;
-    margin-bottom: var(--m) !important;
+    opacity: 0;
+    height: 1.8em;
 }
