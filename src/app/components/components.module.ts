@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { PagesModule } from '../pages/pages.module';
 
 
 @NgModule({
-  declarations: [ NavbarComponent, StatisticsComponent ],
-  imports: [ CommonModule, HttpClientModule ],
-  exports: [ NavbarComponent, StatisticsComponent        
-  ]
+  declarations: [ NavbarComponent ],
+  imports: [ HttpClientModule, RouterModule ],
+  exports: [ NavbarComponent ]
 })
 export class ComponentsModule { }
