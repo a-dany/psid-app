@@ -11,14 +11,12 @@ export class StatisticsComponent implements OnInit {
   
   public dataset: any[] = [];
 
-  constructor( private _data:DataProviderService ) { 
-    Chart.register(...registerables); // Enregistrez les plugins de Chart.js
-  }
+  constructor( private _data:DataProviderService ) { }
 
   ngOnInit(): void {
     this._data.getData().subscribe(
       (data: any) => {
-        this.dataset = this._data.parseCSV(data);
+        this.dataset = this._data.parseCsv(data);
         this.generateHistogram();
       }
     ).add( () => this.charts() )
@@ -27,7 +25,11 @@ export class StatisticsComponent implements OnInit {
 
   public charts() {
 
-    console.log(this.dataset)
+    let pricesByRoomNumber = this.dataset.map(item => {
+      return { rentPrice: item.rent_price, buyPrice: item.buy_price, rooms: item.n_rooms }
+    })
+
+    
 
   }
 
