@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { PagesModule } from '../pages/pages.module';
+import { NavbarComponent } from './navbar/navbar.component';
+import { MapComponent } from './map/map.component';
 
 
 @NgModule({
-  declarations: [ NavbarComponent ],
+  declarations: [ NavbarComponent, MapComponent ],
   imports: [ HttpClientModule, RouterModule ],
-  exports: [ NavbarComponent ]
+  exports: [ NavbarComponent , MapComponent ]
 })
 export class ComponentsModule { }
