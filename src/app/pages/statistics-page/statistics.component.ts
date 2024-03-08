@@ -3,6 +3,7 @@ import { DataProviderService } from '../../services/data-provider.service';
 import { ChartsProvider } from '../../services/charts-provider.service';
 import { HistogramDataset } from '../../interfaces/HistogramDataset';
 import  _  from 'lodash';
+import { PieChartDataset } from '../../interfaces/PieChartDataset';
 
 
 @Component({
@@ -18,16 +19,19 @@ export class StatisticsComponent implements OnInit {
   public dataset: any[] = [];
   private chart1!:HTMLCanvasElement;
   private chart2!:HTMLCanvasElement;
-  
+  private chart3!: HTMLCanvasElement;
+
   
   /***| HOOKS |***/
   
   constructor( private _data:DataProviderService, private _charts:ChartsProvider ) { }
   
+
   ngAfterViewInit() {
-    this.chart1 = document.querySelector('#chart-1') as HTMLCanvasElement
-    this.chart2 = document.querySelector('#chart-2') as HTMLCanvasElement
-  }
+    this.chart1 = document.querySelector('#chart-1') as HTMLCanvasElement;
+    this.chart2 = document.querySelector('#chart-2') as HTMLCanvasElement;
+    this.chart3 = document.querySelector('#chart-3') as HTMLCanvasElement;
+  }  
 
   ngOnInit(): void {
     this._data.getData().subscribe(   (data: any) => { this.dataset = this._data.parseCsv(data); }
@@ -42,6 +46,7 @@ export class StatisticsComponent implements OnInit {
 
     this.initChart1();
     this.initChart2();
+    this.initChart3();
 
   }
 
@@ -95,5 +100,51 @@ export class StatisticsComponent implements OnInit {
   private initChart2() {
     this.chart2
   }
+
+  
+  private initChart3() {
+  // Filtrer les types de maison non vides
+  const houseTypes = this.dataset
+    .filter(item => item.house_type_id.trim() !== "") // Vérifie si house_type_id n'est pas vide
+    .map(item => {
+      // Mapping des équivalents pour chaque house_type_id
+      switch (item.house_type_id) {
+        case 'HouseType 1: Pisos':
+          return 'Apartment';
+        case 'HouseType 2: Casa o chalet':
+          return 'House/Cottage';
+        case 'HouseType 4: D√∫plex':
+          return 'Duplex';
+        case 'HouseType 5: √Åticos':
+          return 'Attic';
+        default:
+          return item.house_type_id;
+      }
+    });
+
+  // Obtenir les types de maison uniques
+  const uniqueHouseTypes = [...new Set(houseTypes)];
+
+  // Compter le nombre de chaque type de maison
+  const countHouseTypes = uniqueHouseTypes.map(houseType => {
+    return houseTypes.filter(type => type === houseType).length;
+  });
+
+  // Créer le jeu de données pour la charte
+  const ds: PieChartDataset = {
+    labels: uniqueHouseTypes,
+    data: countHouseTypes,
+    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)'],
+    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+    borderWidth: 1
+  };
+
+  // Afficher la pie chart
+  this._charts.pieChart(ds.labels, ds.data, ds.backgroundColor, ds.borderColor, ds.borderWidth, this.chart3);
+}
+
+  
+  
+  
 
 }

@@ -38,5 +38,27 @@ export class ChartsProvider {
     });
 
   }
+
+
+  public pieChart(labels: string[], data: number[], backgroundColor: string[], borderColor: string[], borderWidth: number, canvas: HTMLCanvasElement): void {
+  const context = canvas.getContext('2d');
+  if (context) {
+    new Chart(
+      context, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            borderWidth: borderWidth
+          }]
+        }
+      }
+    );
+  }
+}
+
   
 }
