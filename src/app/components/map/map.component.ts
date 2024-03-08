@@ -12,7 +12,7 @@ export class MapComponent implements AfterViewInit {
 
   /***| ATTRIBUTES |***/
   
-  @Input() private view:MapView = { lat:40.416775, lon:-3.703790, zoom:10 };
+  @Input() private view:MapView = { lat:40.416775, lon:-3.703790, zoom:11 };
   @Input() public  dimensions:MapDimensions = { height:"800px", width:"100%" }
   private map!:any;
   
@@ -24,7 +24,7 @@ export class MapComponent implements AfterViewInit {
   }
   
 
-  /***| HOOKS |***/
+  /***| FUNCTIONS |***/
 
   private init():void {
     
@@ -34,9 +34,12 @@ export class MapComponent implements AfterViewInit {
     )
 
     // Init Tiles
-    L.tileLayer( 'http://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_grau/default/WEBMERCATOR/{z}/{y}/{x}.png',
+    // 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png',
+    // 'http://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_grau/default/WEBMERCATOR/{z}/{y}/{x}.png',
+    L.tileLayer( 
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
       {
-        maxZoom: 15, minZoom: 3,
+        maxZoom: 20, minZoom: 10,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }
     ).addTo(this.map);
