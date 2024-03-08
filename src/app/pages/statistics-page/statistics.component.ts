@@ -41,6 +41,7 @@ export class StatisticsComponent implements OnInit {
   public charts() {
 
     this.initChart1();
+    this.initChart2();
 
   }
 
@@ -89,6 +90,10 @@ export class StatisticsComponent implements OnInit {
     this._charts.histogram( labels, ds, 'rooms', 'prices €',  this.chart1, 100
     );
 
+  }
+
+  private initChart2() {
+    this.chart2
   }
 
 }
