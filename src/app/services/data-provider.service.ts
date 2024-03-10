@@ -18,6 +18,16 @@ export class DataProviderService {
     return this.http.get('/assets/dataset-clean.csv', { responseType: 'text' });
   }
 
+  public getDataWithCoords():Observable<any> {
+    return this.http.get('/assets/dataset-with-geolocations.csv', { responseType: 'text' });
+  }
+  
+  public getDistrictsRaw():Observable<any> {
+    return this.http.get('/assets/madrid-districts-geojson.json', { responseType: 'text' });
+  }
+
+
+  /***| 3rd PARTY METHODS |***/
 
   public parseCsv(csv:string) {
     const json = this.parser.parse(csv, { header: true, skipEmptyLines: true }).data;
