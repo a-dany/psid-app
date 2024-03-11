@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProviderService } from '../../services/data-provider.service';
 import { ChartsProvider } from '../../services/charts-provider.service';
-import  _  from 'lodash';
 import { HistogramDataset } from '../../interfaces/HistogramDataset';
 import { Chart } from 'chart.js';
+import  _  from 'lodash';
 
 
 @Component({
@@ -19,13 +19,14 @@ export class DynamicStatsPageComponent implements OnInit {
   private dataset!:any;
   private chart!:HTMLCanvasElement;
   private chartContext?:Chart;
+  public  lines:number = 0;
 
 
   /***| FORM ATTRIBUTES |****/
 
-  public isAccessible:boolean = false
-  public isFloorUnder:boolean = false
-  public isRenewalNeeded:boolean = false
+  public isAccessible:boolean = true
+  public isFloorUnder:boolean = true
+  public isRenewalNeeded:boolean = true
   public hasAc:boolean = false
   public hasPool:boolean = false
   public hasTerrace:boolean = false
@@ -102,6 +103,7 @@ export class DynamicStatsPageComponent implements OnInit {
 
     // TODO : DRY
     let roomBuyPrices = []; let roomRentPrices = []; let labels = []
+    this.lines = data.length;
 
     const limit = 250;
     let   count = 0 ;
@@ -116,9 +118,11 @@ export class DynamicStatsPageComponent implements OnInit {
       roomBuyPrices .push({ district: district, meanBuyPrice : Math.round(buyPrices  * 100) / 100 });
       roomRentPrices.push({ district: district, meanRentPrice: Math.round(rentPrices * 100) / 100 });
 
-      labels.push(++count)
+      labels.push(district)
 
     }
+
+    console.log(labels)
 
     const ds:HistogramDataset[] = [
       {
@@ -126,7 +130,8 @@ export class DynamicStatsPageComponent implements OnInit {
         data: roomBuyPrices.map(e => e.meanBuyPrice),
         backgroundColor: 'rgba(255, 58, 58, 0.60)',
         borderColor: 'rgba(255, 255, 255, 0)',
-        borderWidth: 1
+        borderWidth: 1,
+        hidden: true
       },
       {
         label: 'Mean Rent Price',

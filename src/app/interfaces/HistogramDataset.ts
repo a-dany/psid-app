@@ -3,5 +3,6 @@ export interface HistogramDataset {
     data: number[]
     backgroundColor: string,
     borderColor: string,
-    borderWidth: number
+    borderWidth: number, 
+    hidden?:boolean
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Chart, registerables } from 'chart.js';
+import { Chart, LinearScale, registerables } from 'chart.js';
 import { HistogramDataset } from '../interfaces/HistogramDataset';
 
 @Injectable({
@@ -12,10 +12,11 @@ export class ChartsProvider {
   }
 
 
-  public histogram(labels:number[], datasets:HistogramDataset[], xTitle:string, yTitle:string, canvas: HTMLCanvasElement, step:number = 1): Chart|undefined {
+  public histogram(labels:any[], datasets:HistogramDataset[], xTitle:string, yTitle:string, canvas: HTMLCanvasElement, step:number = 1): Chart|undefined {
 
     const context = canvas.getContext('2d');
     let chart = undefined;
+    let xAxisScale:'linear' | 'category' = (typeof labels[0] === 'string') ? 'category' : 'linear';
 
     if (context) chart = new Chart(
       context, {
@@ -27,6 +28,7 @@ export class ChartsProvider {
       options: {
         scales: {
           x: {
+            type: xAxisScale,
             title: { display: true, text: xTitle
             }
           },
