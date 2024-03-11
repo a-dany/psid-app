@@ -12,7 +12,16 @@
   <div separator></div>
 
   <div class="flex flex-row">
-    
+    <div class=" p-4">
+      <img src="assets/13.png" alt="Image 1" class="w-full">
+      <p class="mt-2">Dans ce graphique, on compare le "buy_price" (prix d'achat) avec d'autres variables telles que "n_rooms" (nombre de chambres), "sq_mt_built" (surface en mètres carrés construits), "n_bathrooms" (nombre de salles de bains). On note que le prix de vente est fortement corrélé avec la surface et un peu moins avec le nombre de pièces du bien.  </p>
+    </div>
+  </div>
+
+  <div separator></div>
+  <div separator></div>
+
+  <div class="flex flex-row">
     <!-- CHART 1 : Prices by rooms number -->
     <div class="w-3/5 bg-gray-100 bg-opacity-25 rounded-lg shadow-md p-4">
       <div class="p-10">
@@ -20,7 +29,6 @@
         <div class="text-center mt-4">Rent and buy prices depending on the room number.</div>
       </div>
     </div>    
-
     <!-- CHART 2 : A pie chart of the distribution of housing types in Madrid -->
     <div class="w-2/5 bg-gray-100 bg-opacity-25 rounded-lg shadow-md p-4">
       <div class="p-10 h-full">
@@ -28,27 +36,47 @@
         <div class="w-100 text-center">Distribution of housing types in Madrid</div>
       </div>
     </div>
-
   </div>
 
   <div separator></div>
   <div separator></div>
 
-  <div class="flex flex-row mt-14">
-
-    <!-- CHART 3 : map -->
-    <div class="w-full">
-      <div>
-        <h3 class="text-2xl font-extrabold">Map : Madrid Estates</h3>
-        <div class="w-full">The map showing the distribution of house prices depending on the location.</div>
-        <div class="mt-10">
-          <app-map [dimensions]="{ height: '650px', width: '100%' }"></app-map>
-        </div>
+  <div class="flex flex-row">
+      <div class="w-1/2 p-4">
+        <img src="assets/2.png" alt="Image 1" class="w-full">
+        <p class="mt-2"> On observe une concentration élevée de biens avec un nombre de pièces allant de 1 à 5, avec un pic pour ceux ayant 3 pièces. Cela indique que les biens à 3 pièces sont les plus courants sur le marché</p>
       </div>
-    </div>
+      <div separator></div>
+      <div class="w-1/2 p-4">
+        <img src="assets/10.png" alt="Image 2" class="w-full">
+        <p class="mt-2"> Le graphique indique une tendance où le prix médian des propriétés augmente avec le nombre de chambres, ce qui est attendu, car des propriétés plus grandes avec plus de chambres ont tendance à être plus coûteuses.
+        </p>
+      </div>
+  </div>
+    
+  <div separator></div>
+  <div separator></div>
 
-    <!-- CHART PARAMETERS -->
+  <div class="flex flex-row">
+      <div class="w-1/2 p-4">
+        <img src="assets/4.png" alt="Image 1" class="w-full">
+        <p class="mt-2">Le prix semble augmenter avec la taille de la surface, ce qui est cohérent avec le marché immobilier où les biens plus grands sont généralement plus chers.</p>
+      </div>
+      <div class="w-1/2 p-4">
+        <img src="assets/1.png" alt="Image 1" class="w-full">
+        <p class="mt-2">Les quartiers en haut de la liste, tels que Moncloa et Hortaleza, présentent les plus grandes tailles moyennes de chambres. Cela pourrait indiquer des propriétés plus spacieuses, souvent associées à des zones résidentielles haut de gamme.
+        </p>
+      </div>
+  </div>
 
+  <div separator></div>
+  <div separator></div>
+
+  <div class="flex"> 
+      <div class=" p-4">
+        <img src="assets/11.png" alt="Image 1" class="">
+        <p class=" mt-2">On peut observer les périodes de croissance et de ralentissement dans la construction immobilière. Les biens les plus anciens, construits avant 1960, semblent être moins nombreux que ceux construits après cette période. Cela peut suggérer que le parc immobilier s'est fortement développé et modernisé au cours de la seconde moitié du 20ème siècle.</p>
+      </div> 
   </div>
 
 </div> 

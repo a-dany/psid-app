@@ -60,5 +60,26 @@ export class ChartsProvider {
   }
 }
 
-  
+public priceHistogram(labels: string[], datasets: HistogramDataset[], xTitle: string, yTitle: string, canvas: HTMLCanvasElement): void {
+  const context = canvas.getContext('2d');
+  if (context) {
+    new Chart(context, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: datasets
+      },
+      options: {
+        scales: {
+          x: {
+            title: { display: true, text: xTitle }
+          },
+          y: {
+            title: { display: true, text: yTitle }
+          }
+        }
+      }
+    });
+  }
+}
 }
