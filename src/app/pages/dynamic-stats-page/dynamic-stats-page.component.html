@@ -1,0 +1,24 @@
+<div class="border border-red-500">
+
+    <div class="font-bold">Filters</div>
+    <div class="flex flex-row flew-wrap gap-2 mt-2">
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsAccessible()">is accessible</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsFloorUnder()">is floor under</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsRenewalNeeded()">is renewal needed</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasAc()">has ac</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasPool()">has pool</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasTerrace()">has terrace</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasBalcony()">has balcony</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasParking()">has parking</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleEnergyCertificate()">energy certificate</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasGarden()">has garden</button>
+        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsNewDevelopment()">is new development</button>
+    </div>
+
+</div>
+
+<div class="w-full bg-gray-100 border border-red-500 bg-opacity-25 rounded-lg shadow-md p-4">
+    <div class="p-10">
+        <div><canvas id="chart" class="h-full w-full"></canvas></div>
+    </div>
+</div>
