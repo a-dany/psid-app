@@ -26,6 +26,10 @@ export class DataProviderService {
     return this.http.get('/assets/barrios.json', { responseType: 'text' });
   }
 
+  public getBordersRaw():Observable<any> {
+    return this.http.get('/assets/borders.json', { responseType: 'json' });
+  }
+
 
   /***| 3rd PARTY METHODS |***/
 

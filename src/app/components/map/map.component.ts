@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MapDimensions, MapView } from '../../interfaces/MapInterfaces';
 import * as L from 'leaflet';
 import * as T from '@turf/turf';
+import { DataProviderService } from '../../services/data-provider.service';
 
 
 @Component({
@@ -9,21 +10,25 @@ import * as T from '@turf/turf';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent implements AfterViewInit, OnChanges {
+export class MapComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   /***| ATTRIBUTES |***/
   
-  @Input() private view:MapView = { lat:40.416775, lon:-3.703790, zoom:11 };
+  @Input() private view:MapView = { lat:40.50710222091962, lon:-3.5340053809203122, zoom:11};
   @Input() public  dimensions:MapDimensions = { height:"800px", width:"100%" }
   @Input() public  geojson!:any;
 
   private map!:any;
+  private dataset!:any;
   
 
   /***| HOOKS |***/
   
-  constructor() {}
+  constructor(private _data:DataProviderService) {}
+  ngOnInit() {
+    
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['geojson'] && !changes['geojson'].isFirstChange()) this.initGeojson();
   }
@@ -57,17 +62,28 @@ export class MapComponent implements AfterViewInit, OnChanges {
     
     if (!this.geojson) return;
 
-    let count=0;
+    // this.dataset = this._data.parseCsv(ds)
     this.geojson.features.forEach(
       (e:any)=>{
-        count++
-        let c = (count===2)?'red':'blue'
-        let style = {
-          color:'transparent', fillColor:c
+
+        let color = "#006600"
+        console.log(parseFloat(e.coordinates[0].length) % 0.2)
+        let style:L.PathOptions = {
+          color:'#00000060', fillColor:color, weight:1, fillOpacity:.15,//parseFloat(e.coordinates[0].length) % 0.7, 
+          dashArray:"1 4"
         }
-        L.geoJSON(e, {style:style}).addTo(this.map)
+        L.geoJSON(e, {
+          style:style
+        }).addTo(this.map)
+
       }
     )
+
+    this._data.getBordersRaw().subscribe(e => {
+      L.geoJSON(e, {style:{
+        weight:4, color:'#00000040', fillOpacity:0
+      }}).addTo(this.map)
+    })
 
   }
 
