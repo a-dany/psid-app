@@ -15,6 +15,9 @@ export class ChartsProvider {
   public histogram(labels:any[], datasets:HistogramDataset[], xTitle:string, yTitle:string, canvas: HTMLCanvasElement, step:number = 1): Chart|undefined {
 
     const context = canvas.getContext('2d');
+    datasets.forEach(e => {
+      if (e.hidden === undefined) e.hidden = false;
+    })
     let chart = undefined;
     let xAxisScale:'linear' | 'category' = (typeof labels[0] === 'string') ? 'category' : 'linear';
 
