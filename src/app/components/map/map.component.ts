@@ -84,15 +84,15 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
           }
           let layer = L.geoJSON(e, { style:style })
           
-          layer.on({
-            mouseover: function(e) { layer.setStyle({
-                weight: 8,
-                color: 'black'
-              });
-            },
-            mouseout: function(e) { layer.setStyle(style);
-            }
-          });
+          // layer.on({
+          //   mouseover: function(e) { layer.setStyle({
+          //       weight: 2,
+          //       color: 'black'
+          //     });
+          //   },
+          //   mouseout: function(e) { layer.setStyle(style);
+          //   }
+          // });
 
           layer.addTo(this.map)
   
