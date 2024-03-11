@@ -21,6 +21,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
 
   private map!:any;
   private dataset!:any;
+
+  public colorUndefined:string = 'gold';
+  public colorOfInterest:string = 'linear-gradient(to left, #DD0000FF, #DD000000)'
   
 
   /***| HOOKS |***/
@@ -35,6 +38,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   ngAfterViewInit() { 
     this.init();
     this.initGeojson();
+    this.initLegend();
   }
   
 
@@ -72,16 +76,28 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
 
           const polygon = T.polygon(e.coordinates)
           let current = d.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
+          if(!current) console.log(JSON.stringify(e.coordinates)) 
 
           let color = "#DD0000"
           if (!current) color = 'gold'
-          let opacity = (current) ? parseFloat(current.mean_price) % 0.7 : 0.5;
-          // console.log(parseFloat(e.coordinates[0].length) % 0.2)
+          let opacity = (current) ? parseFloat(current.mean_price) % 0.6 + 0.15 : 0.5;
           let style:L.PathOptions = {
-            color:'#00000060', fillColor:color, weight:1, fillOpacity:opacity,//parseFloat(e.coordinates[0].length) % 0.7, 
-            dashArray:"1 4"
+            color:'#00000060', fillColor:color, weight:1, fillOpacity:opacity,
+            dashArray:"1 2"
           }
-          L.geoJSON(e, { style:style }).addTo(this.map)
+          let layer = L.geoJSON(e, { style:style })
+          
+          layer.on({
+            mouseover: function(e) { layer.setStyle({
+                weight: 8,
+                color: 'black'
+              });
+            },
+            mouseout: function(e) { layer.setStyle(style);
+            }
+          });
+
+          layer.addTo(this.map)
   
         }
       )
@@ -90,10 +106,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
 
     this._data.getBordersRaw().subscribe(e => {
       L.geoJSON(e, {style:{
-        weight:4, color:'#00000070', fillOpacity:0
+        weight:2, color:'#00000090', fillOpacity:0
       }}).addTo(this.map)
     })
 
+  }
+
+  private initLegend() {
   }
 
 
