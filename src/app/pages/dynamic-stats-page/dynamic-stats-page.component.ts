@@ -66,6 +66,9 @@ export class DynamicStatsPageComponent implements OnInit {
   ngAfterViewInit() { this.chart = document.querySelector('#chart') as HTMLCanvasElement;
   }
 
+
+  /***| PAGE METHODS |***/
+
   private init() { this.initChart();
   }
 
@@ -94,11 +97,8 @@ export class DynamicStatsPageComponent implements OnInit {
     let data = this.dataset.map((item:any) => {
       return { rentPrice: item.rent_price, buyPrice: item.buy_price, district: item.subtitle?.replace(/,\s*Madrid/g, ''), isAccessible: item.is_accessible, isFloorUnder: item.is_floor_under, isRenewalNeeded: item.is_renewal_needed, hasAc: item.has_ac, hasPool: item.has_pool, hasTerrace: item.has_terrace, hasBalcony: item.has_balcony, hasParking: item.has_parking, energyCertificate: item.energy_certificate, hasGarden: item.has_garden, isNewDevelopment: item.is_new_development }
     })
-    // .filter((e:any) => e.isAccessible && e.isFloorUnder && e.isRenewalNeeded && e.hasAc && e.hasPool && e.hasTerrace && e.hasBalcony && e.hasParking && e.energyCertificate && e.hasGarden && e.isNewDevelopment);
     
     data = this.filters(data)
-    console.log(data)
-
     let grouped = _.groupBy(data, 'district');
 
     // TODO : DRY
@@ -121,8 +121,6 @@ export class DynamicStatsPageComponent implements OnInit {
       labels.push(district)
 
     }
-
-    console.log(labels)
 
     const ds:HistogramDataset[] = [
       {
