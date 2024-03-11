@@ -18,6 +18,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() private view:MapView = { lat:40.50710222091962, lon:-3.5340053809203122, zoom:11};
   @Input() public  dimensions:MapDimensions = { height:"800px", width:"100%" }
   @Input() public  geojson!:any;
+  @Input() public  hasLegend:boolean = false;
 
   private map!:any;
   private dataset!:any;
@@ -68,15 +69,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
 
     this._data.getDistrictColorMap().subscribe(d => {
 
-      // console.log([d.longitude, d.latitude])
-      // const point = T.point([d.longitude, d.latitude])
-
       this.geojson.features.forEach(
         (e:any)=>{
 
           const polygon = T.polygon(e.coordinates)
           let current = d.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
-          if(!current) console.log(JSON.stringify(e.coordinates)) 
 
           let color = "#DD0000"
           if (!current) color = 'gold'

@@ -14,7 +14,6 @@ export class MapPageComponent implements OnInit {
   ngOnInit() {
     this._data.getDistrictsRaw().subscribe( data => this.rawDistricts = JSON.parse(data)
     )
-    .add(() => console.log(this.rawDistricts))
   }
 
 }

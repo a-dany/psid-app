@@ -5,7 +5,7 @@
     </div>
 </div>
 
-<div class="absolute bottom-0 left-0 bg-white z-[901] w-[250px] py-3 px-6 rounded-md shadow-black m-3">
+<div *ngIf="hasLegend" class="absolute bottom-0 left-0 bg-white z-[901] w-[250px] py-3 px-6 rounded-md shadow-black m-3">
     <div class="w-full flex flex-row text-xs" title="the darker the color gets the higher the price will be.">
         <div class="w-4/12">Prices</div>
         <div class="w-8/12 border border-gray-500 rounded" [style.background]="colorOfInterest"></div>
