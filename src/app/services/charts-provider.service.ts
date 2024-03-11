@@ -12,11 +12,12 @@ export class ChartsProvider {
   }
 
 
-  public histogram(labels:number[], datasets:HistogramDataset[], xTitle:string, yTitle:string, canvas: HTMLCanvasElement, step:number = 1): void {
+  public histogram(labels:number[], datasets:HistogramDataset[], xTitle:string, yTitle:string, canvas: HTMLCanvasElement, step:number = 1): Chart|undefined {
 
     const context = canvas.getContext('2d');
+    let chart = undefined;
 
-    if (context) new Chart(
+    if (context) chart = new Chart(
       context, {
       type: 'bar',
       data: {
@@ -36,6 +37,8 @@ export class ChartsProvider {
         }
       }
     });
+
+    return chart;
 
   }
 

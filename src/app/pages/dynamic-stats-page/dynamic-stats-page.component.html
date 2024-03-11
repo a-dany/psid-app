@@ -1,23 +1,23 @@
-<div class="border border-red-500">
+<div class="">
 
     <div class="font-bold">Filters</div>
     <div class="flex flex-row flew-wrap gap-2 mt-2">
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsAccessible()">is accessible</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsFloorUnder()">is floor under</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsRenewalNeeded()">is renewal needed</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasAc()">has ac</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasPool()">has pool</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasTerrace()">has terrace</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasBalcony()">has balcony</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasParking()">has parking</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleEnergyCertificate()">energy certificate</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleHasGarden()">has garden</button>
-        <button class="px-3 py-2 rounded text-sm border border-red-200" (click)="toggleIsNewDevelopment()">is new development</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleIsAccessible()" [class.selected]="isAccessible">is accessible</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleIsFloorUnder()" [class.selected]="isFloorUnder">is floor under</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleIsRenewalNeeded()" [class.selected]="isRenewalNeeded">is renewal needed</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleHasAc()" [class.selected]="hasAc">has ac</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleHasPool()" [class.selected]="hasPool">has pool</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleHasTerrace()" [class.selected]="hasTerrace">has terrace</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleHasBalcony()" [class.selected]="hasBalcony">has balcony</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleHasParking()" [class.selected]="hasParking">has parking</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleEnergyCertificate()" [class.selected]="energyCertificate">energy certificate</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleHasGarden()" [class.selected]="hasGarden">has garden</button>
+        <button duration class="px-3 py-2 rounded text-sm text-blue-900 border border-blue-900" (click)="toggleIsNewDevelopment()" [class.selected]="isNewDevelopment">is new development</button>
     </div>
 
 </div>
 
-<div class="w-full bg-gray-100 border border-red-500 bg-opacity-25 rounded-lg shadow-md p-4">
+<div class="w-full bg-gray-100 bg-opacity-25 rounded-lg shadow-md p-4">
     <div class="p-10">
         <div><canvas id="chart" class="h-full w-full"></canvas></div>
     </div>
