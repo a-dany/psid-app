@@ -20,6 +20,7 @@ export class StatisticsComponent implements OnInit {
   private chart1!:HTMLCanvasElement;
   private chart2!:HTMLCanvasElement;
   private chart3!: HTMLCanvasElement;
+  private chart4!: HTMLCanvasElement;
 
   
   /***| HOOKS |***/
@@ -31,6 +32,7 @@ export class StatisticsComponent implements OnInit {
     this.chart1 = document.querySelector('#chart-1') as HTMLCanvasElement;
     this.chart2 = document.querySelector('#chart-2') as HTMLCanvasElement;
     this.chart3 = document.querySelector('#chart-3') as HTMLCanvasElement;
+    this.chart4 = document.querySelector('#chart-4') as HTMLCanvasElement;
   }  
 
   ngOnInit(): void {
@@ -47,6 +49,7 @@ export class StatisticsComponent implements OnInit {
     this.initChart1();
     this.initChart2();
     this.initChart3();
+    this.initChart4();
 
   }
 
@@ -143,8 +146,87 @@ export class StatisticsComponent implements OnInit {
   this._charts.pieChart(ds.labels, ds.data, ds.backgroundColor, ds.borderColor, ds.borderWidth, this.chart3);
 }
 
-  
-  
-  
+private initChart4() {
+  // Colonnes booléennes spécifiées
+  const columnsMap = [
+    "has_green_zones",
+    "is_accessible",
+    "is_floor_under",
+    "is_renewal_needed",
+    "has_ac",
+    "has_pool",
+    "has_terrace",
+    "has_balcony",
+    "has_parking",
+    "energy_certificate",
+    "has_garden",
+    "is_new_development"
+  ];
+
+  // Filtrage des colonnes booléennes
+  const booleanColumns: string[] = [];
+  this.dataset.forEach(item => {
+    columnsMap.forEach(column => {
+      if (typeof item[column] === 'boolean') {
+        booleanColumns.push(column);
+      }
+    });
+  });
+
+  console.log("liste des colones bool : ",booleanColumns)
+
+  const buyPriceData: number[] = [];
+  booleanColumns.forEach(column => {
+    const trueValues: number[] = [];
+    const falseValues: number[] = [];
+
+    this.dataset.forEach(item => {
+      const buyPrice = parseFloat(item["buy_price"]);
+      const value = item[column];
+
+      if (!isNaN(buyPrice) && typeof value === "boolean") {
+        if (value) {
+          trueValues.push(buyPrice);
+        } else {
+          falseValues.push(buyPrice);
+        }
+      }
+    });
+
+    const trueMean = this.calculateMean(trueValues);
+    const falseMean = this.calculateMean(falseValues);
+
+    buyPriceData.push(trueMean, falseMean);
+    console.log("liste des buprices : ", buyPriceData)
+  });
+
+  const labels: string[] = columnsMap.map(column => column.replace(/_/g, " "));
+  const datasets: HistogramDataset[] = [
+    {
+      label: "True",
+      data: buyPriceData.filter((_, index) => index % 2 === 0),
+      backgroundColor: 'rgba(54, 162, 235, 0.6)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+    },
+    {
+      label: "False",
+      data: buyPriceData.filter((_, index) => index % 2 !== 0),
+      backgroundColor: 'rgba(255, 99, 132, 0.6)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1
+    }
+  ];
+
+  console.log("les labels : ", labels)
+  console.log("les datasets : ", datasets)
+  this._charts.priceHistogram(labels, datasets, 'Variables', 'Buy Price', this.chart4);
+}
+
+private calculateMean(data: number[]): number {
+  if (data.length === 0) return 0;
+  const sum = data.reduce((acc, curr) => acc + curr, 0);
+  return sum / data.length;
+}  
 
 }
