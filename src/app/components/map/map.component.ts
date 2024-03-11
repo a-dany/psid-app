@@ -62,26 +62,35 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
     
     if (!this.geojson) return;
 
-    // this.dataset = this._data.parseCsv(ds)
-    this.geojson.features.forEach(
-      (e:any)=>{
+    this._data.getDistrictColorMap().subscribe(d => {
 
-        let color = "#006600"
-        console.log(parseFloat(e.coordinates[0].length) % 0.2)
-        let style:L.PathOptions = {
-          color:'#00000060', fillColor:color, weight:1, fillOpacity:.15,//parseFloat(e.coordinates[0].length) % 0.7, 
-          dashArray:"1 4"
+      // console.log([d.longitude, d.latitude])
+      // const point = T.point([d.longitude, d.latitude])
+
+      this.geojson.features.forEach(
+        (e:any)=>{
+
+          const polygon = T.polygon(e.coordinates)
+          let current = d.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
+
+          let color = "#DD0000"
+          if (!current) color = 'gold'
+          let opacity = (current) ? parseFloat(current.mean_price) % 0.7 : 0.5;
+          // console.log(parseFloat(e.coordinates[0].length) % 0.2)
+          let style:L.PathOptions = {
+            color:'#00000060', fillColor:color, weight:1, fillOpacity:opacity,//parseFloat(e.coordinates[0].length) % 0.7, 
+            dashArray:"1 4"
+          }
+          L.geoJSON(e, { style:style }).addTo(this.map)
+  
         }
-        L.geoJSON(e, {
-          style:style
-        }).addTo(this.map)
+      )
 
-      }
-    )
+    })
 
     this._data.getBordersRaw().subscribe(e => {
       L.geoJSON(e, {style:{
-        weight:4, color:'#00000040', fillOpacity:0
+        weight:4, color:'#00000070', fillOpacity:0
       }}).addTo(this.map)
     })
 

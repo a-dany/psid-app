@@ -25,7 +25,11 @@ export class DataProviderService {
   public getDistrictsRaw():Observable<any> {
     return this.http.get('/assets/barrios.json', { responseType: 'text' });
   }
-
+  
+  public getDistrictColorMap():Observable<any> {
+    return this.http.get('/assets/barrios-colors.json', { responseType: 'json' });
+  }
+  
   public getBordersRaw():Observable<any> {
     return this.http.get('/assets/borders.json', { responseType: 'json' });
   }
