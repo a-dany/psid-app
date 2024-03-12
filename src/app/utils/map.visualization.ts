@@ -70,7 +70,7 @@ export class PricesGeoData extends GeoData {
     }
 
 
-    /***| ATTRIBUTES |***/
+    /***| METHODS |***/
 
     public display() { this.data(); this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
     }
@@ -108,7 +108,24 @@ export class PricesGeoData extends GeoData {
 
 }
 
+
+/***| BLANK |***/
+
+export class NeutralGeoData extends GeoData {
+
+    constructor(private _provider:DataProviderService) { super();
+    }
+    public display() { this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
+    }
+
+}
+
+
 export class PopulationGeoData extends GeoData {
+    
+    constructor(private _provider:DataProviderService) { super();
+    }
+
     public display() {
         console.log('Population')
     }

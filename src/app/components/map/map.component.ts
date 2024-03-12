@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MapDimensions, MapView } from '../../interfaces/MapInterfaces';
-import * as L from 'leaflet';
-import * as T from '@turf/turf';
 import { GeoData } from '../../utils/map.visualization';
+import * as L from 'leaflet';
 
 
 @Component({
