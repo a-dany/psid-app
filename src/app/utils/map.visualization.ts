@@ -14,6 +14,7 @@ export abstract class GeoData {
 
     protected styleOuterBorders:L.PathOptions = { weight:2, color:'#00000045', fillOpacity:0 }
     protected styleRegion:L.PathOptions = { color:'#00000030', weight:1, dashArray:"1 2" }
+    protected styleRegionHover:L.PathOptions = { color: '#00000080', dashArray: '', fillOpacity: 0.7 };
 
 
     /***| ABSTRACT METHODS |***/
@@ -28,6 +29,27 @@ export abstract class GeoData {
     public clear() { console.log('Clear method not ready yet.');
     }
     protected borders(data:any) { L.geoJSON(data, {style: this.styleOuterBorders}).addTo(this.map)
+    }
+
+    protected highlight = (e:any) => {
+        var layer = e.target; 
+        layer.options.originalStyle = layer.options.style;
+        layer.setStyle(this.styleRegionHover);
+        layer.bringToFront();
+    }
+    protected resetHighlight = (e:any) => {
+        var layer = e.target; 
+        layer.setStyle(layer.options.originalStyle);
+        layer.bringToFront();
+        // geojson.resetStyle(layer);
+    }
+
+    protected onEachFeature = (feature:any, layer:any) => {
+        layer.on({
+            mouseover: this.highlight,
+            mouseout : this.resetHighlight,
+        });
+        feature.originalStyle = layer.options.style;
     }
 
 }
@@ -48,27 +70,36 @@ export class PricesGeoData extends GeoData {
 
     /***| ATTRIBUTES |***/
 
-    public display() { this.data(); // this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
+    public display() { this.data(); this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
     }
 
     private data() {
         this._provider.getDistrictsRaw().subscribe( d => {
             
             if (!d) return;
+            const districtLayers: L.GeoJSON<any>[] = [];
 
             d.features.forEach((district:any) => {
                 
                 let polygon = T.polygon(district.coordinates)
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
-                let color   = (current) ? "#DD0000" : 'gold';
-                let opacity = (current) ? parseFloat(current.mean_price) % 0.45 + 0.05 : 0.25;
+                let color   = (current) ? "#EE0000" : 'gold';
+                let opacity = (current) ? parseFloat(current.mean_price) % 0.42 + 0.05 : 0.2;
+                const layer = L.geoJSON(district, {
+                    style: {
+                        ...this.styleRegion,
+                        fillColor: color,
+                        fillOpacity: opacity,
+                    },
+                    onEachFeature: this.onEachFeature//.bind(this)
+                });
 
-                this.styleRegion.fillColor   = color;
-                this.styleRegion.fillOpacity = opacity;
-                L.geoJSON(district, { style: this.styleRegion }).addTo(this.map)
+                districtLayers.push(layer);
 
             })
+
+            L.layerGroup(districtLayers).addTo(this.map);
 
         })
     }
