@@ -10,6 +10,9 @@ import { NeutralGeoData, GeoData, PricesGeoData, PopulationGeoData } from '../..
 export class MapPageComponent implements OnInit {
 
 
+  public tools:boolean = false;
+  public toggleTools = () => { this.tools = !this.tools }
+
   public geodata!:GeoData;  
 
   constructor(private _data:DataProviderService) {}

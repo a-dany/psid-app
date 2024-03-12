@@ -12,9 +12,9 @@ export abstract class GeoData {
 
     protected map!:L.Map;
 
-    protected styleOuterBorders:L.PathOptions = { weight:2, color:'#00000045', fillOpacity:0 }
+    protected styleOuterBorders:L.PathOptions = { weight:2, color:'#00000060', fillOpacity:0 }
     protected styleRegion:L.PathOptions = { color:'#00000030', weight:1, dashArray:"1 2" }
-    protected styleRegionHover:L.PathOptions = { color: '#00000080', dashArray: '', fillOpacity: 0.7 };
+    protected styleRegionHover:L.PathOptions = { color: '#00000090', weight:1, dashArray: '', fillOpacity: 0.8 };
 
 
     /***| ABSTRACT METHODS |***/
@@ -43,7 +43,6 @@ export abstract class GeoData {
         var layer = e.target; 
         layer.setStyle(layer.options.originalStyle);
         layer.bringToFront();
-        // geojson.resetStyle(layer);
     }
 
     protected onEachFeature = (feature:any, layer:any) => {
@@ -72,7 +71,11 @@ export class PricesGeoData extends GeoData {
 
     /***| METHODS |***/
 
-    public display() { this.data(); this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
+    public display() { 
+        this.styleOuterBorders.color = '#000000A0'
+        this.styleRegion.color = '#00000070'
+        this.styleRegionHover.color = '#000000A0'
+        this._provider.getBordersRaw().subscribe( d => { this.borders(d) }); this.data(); 
     }
 
     private data() {
@@ -87,7 +90,7 @@ export class PricesGeoData extends GeoData {
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
                 let color   = (current) ? "#EE0000" : 'gold';
-                let opacity = (current) ? parseFloat(current.mean_price) % 0.42 + 0.05 : 0.2;
+                let opacity = (current) ? parseFloat(current.mean_price) % 0.68 + 0.05 : 0.4;
                 const layer = L.geoJSON(district, {
                     style: {
                         ...this.styleRegion,

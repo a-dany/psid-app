@@ -18,15 +18,18 @@
 
 
 <!-- OPTIONS -->
-<div class="w-full absolute bottom-0 !z-[99999] ">
-    <div class="w-9/12 mx-auto ">
+<div class="w-fit absolute bottom-0 left-[12.5vw] !z-[99999] ">
+    <div>
         
         <!-- START -->
-        <div class="cursor-pointer px-5 py-4 w-fit my-8 rounded-md flex flex-row justify-start shadow-[0_0_60PX_6PX_#090e1b1f] bg-white">
+        <div class="relative cursor-pointer w-fit my-8 rounded-md flex flex-row justify-start">
 
-            <!-- LEFT -->
-            <div class="w-fit">
-                EstateViewer
+            <div [class.hide]="!this.tools" class="px-5 py-3 w-fit text-[#000000B0] text-2xl rounded-md mx-2 bg-white shadow-[0_0_60PX_6PX_#090e1b1f]">
+                <div class="flex flex-row gap-4 h-full px-1">
+                    <span (click)="mapNeutral()" icon class="text-[#000000B0] h-full text-2xl flex items-center justify-center">map</span>
+                    <span (click)="mapPrices()" icon class="text-[#000000B0] h-full text-2xl flex items-center justify-center">euro</span>
+                    <span (click)="mapPopulation()" icon class="text-[#000000B0] h-full text-2xl flex items-center justify-center">groups</span>
+                </div>
             </div>
         
             <!-- RIGHT -->
