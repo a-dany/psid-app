@@ -26,7 +26,9 @@ export abstract class GeoData {
 
     public defineMap(m:L.Map) { this.map = m 
     }
-    public clear() { console.log('Clear method not ready yet.');
+    public clear() { 
+        if (this.map) this.map.eachLayer((e:any) => { if (e instanceof L.GeoJSON) this.map.removeLayer(e)
+        });
     }
     protected borders(data:any) { L.geoJSON(data, {style: this.styleOuterBorders}).addTo(this.map)
     }
