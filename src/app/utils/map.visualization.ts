@@ -18,6 +18,11 @@ export abstract class GeoData {
     protected styleRegionHover:L.PathOptions = { color: '#00000090', weight:1, dashArray: '', fillOpacity: 0.8 };
 
 
+    protected opacityMax:number = 0.68;
+    protected opacityMin:number = 0.05;
+    protected opacityMed:number = 0.40;
+
+
     /***| ABSTRACT METHODS |***/
 
     public abstract display():void;
@@ -67,7 +72,7 @@ export class PricesGeoData extends GeoData {
     /***| INIT |***/
 
     private dataDistrictsLight:any;
-    constructor(private _provider:DataProviderService) { super(); this._provider.getDistrictColorMap().subscribe( ds => this.dataDistrictsLight = ds );
+    constructor(private _provider:DataProviderService) { super(); this._provider.getDistrictEstatePrices().subscribe( ds => this.dataDistrictsLight = ds );
     }
 
 
@@ -94,7 +99,7 @@ export class PricesGeoData extends GeoData {
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
                 let color   = (current) ? "#EE0000" : 'gold';
-                let opacity = (current) ? parseFloat(current.mean_price) % 0.68 + 0.05 : 0.4;
+                let opacity = (current) ? parseFloat(current.mean_price) % this.opacityMax + this.opacityMin : this.opacityMed;
                 const layer = L.geoJSON(district, {
                     style: {
                         ...this.styleRegion,
@@ -129,13 +134,51 @@ export class NeutralGeoData extends GeoData {
 }
 
 
+/***| POPULATION |***/
+
 export class PopulationGeoData extends GeoData {
     
-    constructor(private _provider:DataProviderService) { super();
+    private dataDistrictsLight:any;
+    constructor(private _provider:DataProviderService) { super(); this._provider.getDistrictPopulation().subscribe( ds => this.dataDistrictsLight = ds );
     }
 
     public title() { return MapTypes.Population }
-    public display() {
-        console.log('Population')
+    public display() { 
+        this.styleOuterBorders.color = '#000000A0'
+        this.styleRegion.color = '#00000070'
+        this.styleRegionHover.color = '#000000A0'
+        this._provider.getBordersRaw().subscribe( d => { this.borders(d) }); this.data(); 
     }
+
+    private data() {
+        this._provider.getDistrictsRaw().subscribe( d => {
+            
+            if (!d) return;
+            const districtLayers: L.GeoJSON<any>[] = [];
+
+            d.features.forEach((district:any) => {
+                
+                let polygon = T.polygon(district.coordinates)
+                let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
+
+                let color   = (current) ? "#00EE00" : 'gold';
+                let opacity = (current) ? parseFloat(current.population) % this.opacityMax + this.opacityMin : this.opacityMed;
+                const layer = L.geoJSON(district, {
+                    style: {
+                        ...this.styleRegion,
+                        fillColor: color,
+                        fillOpacity: opacity,
+                    },
+                    onEachFeature: this.onEachFeature//.bind(this)
+                });
+
+                districtLayers.push(layer);
+
+            })
+
+            L.layerGroup(districtLayers).addTo(this.map);
+
+        })
+    }
+
 }

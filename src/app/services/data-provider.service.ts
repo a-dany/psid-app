@@ -26,8 +26,12 @@ export class DataProviderService {
     return this.http.get('/assets/barrios.json', { responseType: 'json' });
   }
   
-  public getDistrictColorMap():Observable<any> {
-    return this.http.get('/assets/barrios-colors.json', { responseType: 'json' });
+  public getDistrictEstatePrices():Observable<any> {
+    return this.http.get('/assets/barrios-precios.json', { responseType: 'json' });
+  }
+  
+  public getDistrictPopulation():Observable<any> {
+    return this.http.get('/assets/barrios-poblacion.json', { responseType: 'json' });
   }
   
   public getBordersRaw():Observable<any> {
