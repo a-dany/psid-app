@@ -13,18 +13,27 @@ export class MapPageComponent implements OnInit {
 
 
   public MapTypes = MapTypes;
-  public geodata!:GeoData;  
+  
+  public neutral!: GeoData;   
+  public prices!: GeoData;   
+  public population!: GeoData;   
+
+  public geodata!:GeoData;
 
   constructor(private _data:DataProviderService) {}
-  ngOnInit() { this.mapNeutral();
+  ngOnInit() { 
+    this.neutral = new NeutralGeoData(this._data);
+    this.prices =  new PricesGeoData(this._data);
+    this.population = new PopulationGeoData(this._data);
+    this.mapNeutral();
   }
   
 
-  public mapNeutral () { this.geodata = new NeutralGeoData(this._data);
+  public mapNeutral () { this.geodata = this.neutral;
   }
-  public mapPrices () { this.geodata = new PricesGeoData(this._data);
+  public mapPrices () { this.geodata = this.prices;
   }
-  public mapPopulation () { this.geodata = new PopulationGeoData(this._data);
+  public mapPopulation () { this.geodata = this.population;
   }
 
 

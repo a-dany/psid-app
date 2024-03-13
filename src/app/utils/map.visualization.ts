@@ -57,7 +57,6 @@ export abstract class GeoData {
             mouseover: this.highlight,
             mouseout : this.resetHighlight,
         });
-        feature.originalStyle = layer.options.style;
     }
 
 }
@@ -129,10 +128,13 @@ export class NeutralGeoData extends GeoData {
     }
     public title() { return MapTypes.Neutral }
     public display() { 
-        this.styleOuterBorders.color = '#00000050'
-        this.styleOuterBorders.className = 'map-shadow'
         this.styleRegion.fillOpacity = 0;
         this.styleRegion.fillColor = '#fff';
+        this.styleRegion.dashArray = '1 1'
+        this.styleRegion.color = '#00000025'
+        this.styleOuterBorders.color = '#00000050'
+        this.styleOuterBorders.className = 'map-shadow'
+
         this._provider.getBordersRaw().subscribe( d => { this.borders(d) }); this.data()
     }
 
