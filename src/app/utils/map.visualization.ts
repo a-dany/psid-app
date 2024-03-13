@@ -197,7 +197,7 @@ export class PopulationGeoData extends GeoData {
                 let polygon = T.polygon(district.coordinates)
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
-                let color   = (current) ? "#00EE00" : 'gold';
+                let color   = (current) ? "#008800" : 'gold';
                 let opacity = (current) ? this.normalize(current.population,min,max,1) : this.opacityMed;
                 const layer = L.geoJSON(district, {
                     style: {
