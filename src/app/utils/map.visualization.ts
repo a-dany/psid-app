@@ -23,6 +23,10 @@ export abstract class GeoData {
     protected opacityMed:number = 0.40;
 
 
+    protected numberFormat = new Intl.NumberFormat('eu', {
+        useGrouping: true
+    });
+
     /***| ABSTRACT METHODS |***/
 
     public abstract display():void;
@@ -107,6 +111,7 @@ export class PricesGeoData extends GeoData {
                     },
                     onEachFeature: this.onEachFeature//.bind(this)
                 });
+                layer.bindTooltip( (current) ? `<span class="font-bold">${current.quartier.replace(/,.*?$/, '')}</span><br/>${this.numberFormat.format(current.mean_price)} €` : 'No data found' )
 
                 districtLayers.push(layer);
 
@@ -189,6 +194,7 @@ export class PopulationGeoData extends GeoData {
                     onEachFeature: this.onEachFeature//.bind(this)
                 });
 
+                layer.bindTooltip( (current) ? `<span class="font-bold">${current.name.replace(/,.*?$/, '')}</span><br/>${this.numberFormat.format(current.population)} hab` : 'No data found' )
                 districtLayers.push(layer);
 
             })
