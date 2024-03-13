@@ -129,6 +129,8 @@ export class NeutralGeoData extends GeoData {
     }
     public title() { return MapTypes.Neutral }
     public display() { 
+        this.styleOuterBorders.color = '#00000050'
+        this.styleOuterBorders.className = 'map-shadow'
         this.styleRegion.fillOpacity = 0;
         this.styleRegion.fillColor = '#fff';
         this._provider.getBordersRaw().subscribe( d => { this.borders(d) }); this.data()
