@@ -128,7 +128,20 @@ export class NeutralGeoData extends GeoData {
     constructor(private _provider:DataProviderService) { super();
     }
     public title() { return MapTypes.Neutral }
-    public display() { this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
+    public display() { 
+        this.styleRegion.fillOpacity = 0;
+        this.styleRegion.fillColor = '#fff';
+        this._provider.getBordersRaw().subscribe( d => { this.borders(d) }); this.data()
+    }
+
+    private data() {
+        this._provider.getDistrictsRaw().subscribe( d => {
+            d.features.forEach((district:any) => {
+                L.geoJSON(district, { style: this.styleRegion
+                })
+                .addTo(this.map)
+            })
+        });
     }
 
 }
