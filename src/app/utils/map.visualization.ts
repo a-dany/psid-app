@@ -18,8 +18,8 @@ export abstract class GeoData {
     protected styleRegionHover:L.PathOptions = { color: '#00000090', weight:1, dashArray: '', fillOpacity: 0.8 };
 
 
-    protected opacityMax:number = 0.68;
-    protected opacityMin:number = 0.05;
+    protected opacityMax:number = 0.89;
+    protected opacityMin:number = 0.25;
     protected opacityMed:number = 0.40;
 
 
@@ -42,6 +42,9 @@ export abstract class GeoData {
         });
     }
     protected borders(data:any) { L.geoJSON(data, {style: this.styleOuterBorders}).addTo(this.map)
+    }
+    protected normalize(value:number, min:number, max:number, scale:number) {
+        return Math.max(0, Math.min(1, (value - min) / (max - min))) % this.opacityMax + this.opacityMin;
     }
 
     protected highlight = (e:any) => {
@@ -94,7 +97,12 @@ export class PricesGeoData extends GeoData {
         this._provider.getDistrictsRaw().subscribe( d => {
             
             if (!d) return;
+
             const districtLayers: L.GeoJSON<any>[] = [];
+            const prices = this.dataDistrictsLight.map((e:any) => e.mean_price);
+            const min = Math.min(...prices);
+            const max = Math.max(...prices);
+            console.log(min, max)
 
             d.features.forEach((district:any) => {
                 
@@ -102,7 +110,8 @@ export class PricesGeoData extends GeoData {
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
                 let color   = (current) ? "#EE0000" : 'gold';
-                let opacity = (current) ? parseFloat(current.mean_price) % this.opacityMax + this.opacityMin : this.opacityMed;
+                let opacity = (current) ? this.normalize(current.mean_price,min,max,1) : this.opacityMax;
+
                 const layer = L.geoJSON(district, {
                     style: {
                         ...this.styleRegion,
@@ -176,6 +185,11 @@ export class PopulationGeoData extends GeoData {
         this._provider.getDistrictsRaw().subscribe( d => {
             
             if (!d) return;
+
+            const pops = this.dataDistrictsLight.map((e:any)=>e.population);
+            const min = Math.min(...pops)
+            const max = Math.max(...pops)
+
             const districtLayers: L.GeoJSON<any>[] = [];
 
             d.features.forEach((district:any) => {
@@ -184,7 +198,7 @@ export class PopulationGeoData extends GeoData {
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
                 let color   = (current) ? "#00EE00" : 'gold';
-                let opacity = (current) ? parseFloat(current.population) % this.opacityMax + this.opacityMin : this.opacityMed;
+                let opacity = (current) ? this.normalize(current.population,min,max,1) : this.opacityMed;
                 const layer = L.geoJSON(district, {
                     style: {
                         ...this.styleRegion,
@@ -194,7 +208,7 @@ export class PopulationGeoData extends GeoData {
                     onEachFeature: this.onEachFeature//.bind(this)
                 });
 
-                layer.bindTooltip( (current) ? `<span class="font-bold">${current.name.replace(/,.*?$/, '')}</span><br/>${this.numberFormat.format(current.population)} hab` : 'No data found' )
+                layer.bindTooltip( (current) ? `<span class="font-bold">${current.name.replace(/,.*?$/, '')}</span><br/>${this.numberFormat.format(current.population)} hab.` : 'No data found' )
                 districtLayers.push(layer);
 
             })
