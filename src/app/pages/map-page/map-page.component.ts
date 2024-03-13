@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataProviderService } from '../../services/data-provider.service';
 import { NeutralGeoData, GeoData, PricesGeoData, PopulationGeoData } from '../../utils/map.visualization';
+import { MapTypes } from '../../utils/map.types';
 
 @Component({
   selector: 'app-map-page',
@@ -8,11 +9,10 @@ import { NeutralGeoData, GeoData, PricesGeoData, PopulationGeoData } from '../..
   styleUrl: './map-page.component.scss'
 })
 export class MapPageComponent implements OnInit {
+[x: string]: any;
 
 
-  public tools:boolean = false;
-  public toggleTools = () => { this.tools = !this.tools }
-
+  public MapTypes = MapTypes;
   public geodata!:GeoData;  
 
   constructor(private _data:DataProviderService) {}

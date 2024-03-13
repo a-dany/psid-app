@@ -9,3 +9,12 @@
         z-index: 899;
     }
 }
+[item]{
+    transition-duration: .3s;
+    &.selected {
+        color: #2a312b;
+        background: #80b988;
+        box-shadow: 0 0 20PX rgb(50 94 56 / 20%) !important;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.19);
+    }
+}
