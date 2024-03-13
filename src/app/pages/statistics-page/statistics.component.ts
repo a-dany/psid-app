@@ -73,7 +73,7 @@ export class StatisticsComponent implements OnInit {
       roomBuyPrices .push({ rooms: rooms, meanBuyPrice : Math.round(buyPrices  * 100) / 100 });
       roomRentPrices.push({ rooms: rooms, meanRentPrice: Math.round(rentPrices * 100) / 100 });
 
-      labels.push(parseFloat(rooms))
+      labels.push(`${rooms}`)
 
     }
 
@@ -90,7 +90,8 @@ export class StatisticsComponent implements OnInit {
         data: roomRentPrices.map(e => e.meanRentPrice),
         backgroundColor: 'rgba(0, 79, 220, 0.60)',
         borderColor: 'rgba(255, 255, 255, 0)',
-        borderWidth: 1
+        borderWidth: 1,
+        hidden: true
       }
     ]
 
