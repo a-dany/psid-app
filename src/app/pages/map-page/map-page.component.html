@@ -18,9 +18,8 @@
 
 <!-- TITLE -->
 <div class="w-fit absolute bottom-0 left-[12.5vw] !z-[99999] mb-4">
-    <div class="px-5 py-1 flex items-center text-xs tracking-wider font-semibold text-white bg-[#000000C0] rounded-full">
-        {{ this.geodata.title() }}
-
+    <div class="px-5 py-1 pb-1.5 flex items-center tracking-wider font-semibold text-white bg-[#000000C0] rounded-md" style="font-variant: small-caps;" >
+        {{ this.geodata.title() | lowercase }}
     </div>
 </div>
 
