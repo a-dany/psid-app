@@ -1,6 +1,7 @@
 import { DataProviderService } from '../services/data-provider.service';
 import * as L from 'leaflet';
 import * as T from '@turf/turf';
+import { MapTypes } from './map.types';
 
 
 /***| MAIN ABSTRACT CLASS |***/
@@ -20,6 +21,7 @@ export abstract class GeoData {
     /***| ABSTRACT METHODS |***/
 
     public abstract display():void;
+    public abstract title():MapTypes;
 
 
     /***| SHARED METHODS |***/
@@ -71,6 +73,8 @@ export class PricesGeoData extends GeoData {
 
     /***| METHODS |***/
 
+    public title() { return MapTypes.Prices }
+
     public display() { 
         this.styleOuterBorders.color = '#000000A0'
         this.styleRegion.color = '#00000070'
@@ -118,6 +122,7 @@ export class NeutralGeoData extends GeoData {
 
     constructor(private _provider:DataProviderService) { super();
     }
+    public title() { return MapTypes.Neutral }
     public display() { this._provider.getBordersRaw().subscribe( d => { this.borders(d) })
     }
 
@@ -129,6 +134,7 @@ export class PopulationGeoData extends GeoData {
     constructor(private _provider:DataProviderService) { super();
     }
 
+    public title() { return MapTypes.Population }
     public display() {
         console.log('Population')
     }
