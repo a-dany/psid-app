@@ -110,7 +110,7 @@ export class PricesGeoData extends GeoData {
                 let current = this.dataDistrictsLight.find((k:any) => T.booleanPointInPolygon([k.longitude, k.latitude] , polygon))
 
                 let color   = (current) ? "#EE0000" : 'gold';
-                let opacity = (current) ? this.normalize(current.mean_price,min,max,1) : this.opacityMax;
+                let opacity = (current) ? this.normalize(current.mean_price,min,max,1) : this.opacityMin;
 
                 const layer = L.geoJSON(district, {
                     style: {
